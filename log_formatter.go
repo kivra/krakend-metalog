@@ -22,7 +22,6 @@ func LogFormatter(param gin.LogFormatterParams) string { // nolint
 		logMessage = metaData
 	}
 
-	logMessage["@timestamp"] = param.TimeStamp.Local().Format("2006-01-02T15:04:05.000+00:00")
 	logMessage["client_ip"] = param.ClientIP
 	logMessage["duration_us"] = param.Latency.Microseconds()
 	logMessage["headers"] = format(param.Request.Header)
@@ -33,6 +32,7 @@ func LogFormatter(param gin.LogFormatterParams) string { // nolint
 	logMessage["query"] = param.Request.URL.Query()
 	logMessage["response_body_size"] = param.BodySize
 	logMessage["status"] = param.StatusCode
+	logMessage["timestamp"] = param.TimeStamp.Format("2006-01-02T15:04:05.000+00:00")
 
 	if param.ErrorMessage != "" {
 		logMessage["message"] = strings.TrimSuffix(param.ErrorMessage, "\n")
