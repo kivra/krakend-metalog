@@ -14,13 +14,7 @@ func LogFormatter(param gin.LogFormatterParams) string { // nolint
 		param.Latency -= param.Latency % time.Second
 	}
 
-	var logMessage = make(map[string]interface{})
-
-	ctx := param.Request.Context()
-	metaData, ok := ctx.Value(Metalog).(Config)
-	if ok {
-		logMessage = metaData
-	}
+	logMessage := Get(param.Request)
 
 	logMessage["client_ip"] = param.ClientIP
 	logMessage["duration_us"] = param.Latency.Microseconds()

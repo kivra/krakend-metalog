@@ -2,12 +2,29 @@ package metalog
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/luraproject/lura/v2/config"
 	"github.com/luraproject/lura/v2/proxy"
 	krakendgin "github.com/luraproject/lura/v2/router/gin"
 )
+
+func Add(moreData map[string]interface{}, c *gin.Context) {
+	metaData := Get(c.Request)
+	for key, value := range moreData {
+		metaData[key] = value
+	}
+	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), Metalog, metaData))
+}
+
+func Get(req *http.Request) map[string]interface{} {
+	metaData, ok := req.Context().Value(Metalog).(Config)
+	if ok {
+		return metaData
+	}
+	return make(map[string]interface{})
+}
 
 func HandlerFactory(next krakendgin.HandlerFactory) krakendgin.HandlerFactory {
 	// runs when endpoint is registered
@@ -21,12 +38,7 @@ func HandlerFactory(next krakendgin.HandlerFactory) krakendgin.HandlerFactory {
 
 		// runs when request is executed
 		return func(c *gin.Context) {
-			var meta = make(map[string]interface{})
-			for key, value := range *metaData {
-				meta[key] = value
-			}
-			ctx := c.Request.Context()
-			c.Request = c.Request.WithContext(context.WithValue(ctx, Metalog, meta))
+			Add(*metaData, c)
 			handlerFunc(c)
 		}
 	}
