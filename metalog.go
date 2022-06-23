@@ -3,6 +3,8 @@ package metalog
 import (
 	"bytes"
 	"encoding/json"
+	"strings"
+	"time"
 
 	"github.com/luraproject/lura/v2/config"
 )
@@ -15,7 +17,16 @@ type Key struct {
 
 const Namespace = "kivra/metalog"
 
-var Metalog = Key{namespace: Namespace}
+var metalog = Key{namespace: Namespace}
+
+// TimeFormat used to format time in logs
+var TimeFormat = time.RFC3339
+
+// TimeKey that holds the log time in logs
+var TimeKey = "timestamp"
+
+// LevelFormatter to format log levels
+var LevelFormatter = strings.ToUpper
 
 func ConfigGetter(e config.ExtraConfig) (*Config, bool) { // nolint
 	cfg := new(Config)

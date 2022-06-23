@@ -15,11 +15,11 @@ func Add(moreData map[string]interface{}, c *gin.Context) {
 	for key, value := range moreData {
 		metaData[key] = value
 	}
-	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), Metalog, metaData))
+	c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), metalog, metaData))
 }
 
 func Get(req *http.Request) map[string]interface{} {
-	metaData, ok := req.Context().Value(Metalog).(Config)
+	metaData, ok := req.Context().Value(metalog).(Config)
 	if ok {
 		return metaData
 	}
