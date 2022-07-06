@@ -41,6 +41,7 @@ func LogFormatter(param gin.LogFormatterParams) string { // nolint
 	logMessage["path"] = param.Request.URL.Path
 	logMessage["query"] = param.Request.URL.Query()
 	logMessage["response_body_size"] = param.BodySize
+	logMessage["response_headers"] = format(param.Request.Response.Header)
 	logMessage["status"] = param.StatusCode
 	logMessage[TimeKey] = param.TimeStamp.Format(TimeFormat)
 
