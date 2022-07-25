@@ -9,7 +9,7 @@ To install `metalog` from GitHub:
 
     go get -u github.com/kivra/krakend-metalog@<commit hash>
 
-Then add `metalog` to the KrakenD [`handler_factory`](https://github.com/devopsfaith/krakend-ce/blob/master/handler_factory.go)
+Then add `metalog` to the KrakenD [`handler_factory`](https://github.com/krakendio/krakend-ce/blob/master/handler_factory.go)
 chain:
 
 ```go
@@ -17,7 +17,7 @@ handlerFactory = metalog.HandlerFactory(handlerFactory)
 ```
 
 Finally, add the `metalog` log formatter to the `luragin.EngineOptions` when
-creating KrakenD's [`router_engine`](https://github.com/devopsfaith/krakend-ce/blob/master/router_engine.go):
+creating KrakenD's [`router_engine`](https://github.com/krakendio/krakend-ce/blob/master/router_engine.go):
 
 ```go
 opt.Formatter = metalog.LogFormatter
